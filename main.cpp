@@ -62,14 +62,15 @@ public:
 };
 
 std::vector<Peca> pecas = {
-    Peca(1,1,"branco","peao"),
-    Peca(2,1,"branco","peao"),
-    Peca(3,1,"branco","peao"),
-    Peca(4,1,"branco","peao"),
-    Peca(5,1,"branco","peao"),
-    Peca(6,1,"branco","peao"),
-    Peca(7,1,"branco","peao"),
-    Peca(8,1,"branco","peao"),
+    Peca(1,1,"branco","torre"),
+    Peca(2,1,"branco","cavalo"),
+    Peca(3,1,"branco","bispo"),
+    Peca(4,1,"branco","rei"),
+    Peca(5,1,"branco","dama"),
+    Peca(6,1,"branco","bispo"),
+    Peca(7,1,"branco","cavalo"),
+    Peca(8,1,"branco","torre"),
+
     Peca(1,2,"branco","peao"),
     Peca(2,2,"branco","peao"),
     Peca(3,2,"branco","peao"),
@@ -79,14 +80,15 @@ std::vector<Peca> pecas = {
     Peca(7,2,"branco","peao"),
     Peca(8,2,"branco","peao"),
 
-    Peca(1,8,"preto","peao"),
-    Peca(2,8,"preto","peao"),
-    Peca(3,8,"preto","peao"),
-    Peca(4,8,"preto","peao"),
-    Peca(5,8,"preto","peao"),
-    Peca(6,8,"preto","peao"),
-    Peca(7,8,"preto","peao"),
-    Peca(8,8,"preto","peao"),
+    Peca(1,8,"preto","torre"),
+    Peca(2,8,"preto","cavalo"),
+    Peca(3,8,"preto","bispo"),
+    Peca(4,8,"preto","rei"),
+    Peca(5,8,"preto","dama"),
+    Peca(6,8,"preto","bispo"),
+    Peca(7,8,"preto","cavalo"),
+    Peca(8,8,"preto","torre"),
+
     Peca(1,7,"preto","peao"),
     Peca(2,7,"preto","peao"),
     Peca(3,7,"preto","peao"),
@@ -123,8 +125,19 @@ void desenharTodasPecas()
 {
     for(int i=0;i<pecas.size();i++)
     {
-        std::cout << pecas[i].time << std::endl;
+        //std::cout << pecas[i].time << std::endl;
         pecas[i].desenharPeca();
+    }
+}
+
+void renderizarTexto(int x,int y, char *str)
+{
+    glPushAttrib(GL_CURRENT_BIT);
+    glColor3f(1.0f,1.0f,1.0f);
+    glRasterPos2i(x,y);
+    for (char *txt=str;*txt!='\0';txt++)
+    {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *txt);
     }
 }
 
@@ -133,6 +146,7 @@ void display()
     glClear(GL_COLOR_BUFFER_BIT);
     desenharTabuleiro();
     desenharTodasPecas();
+    renderizarTexto(400,50,"Teste");
     glutSwapBuffers();
 }
 
