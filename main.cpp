@@ -4,14 +4,26 @@
 
 #define WIN_WIDTH 1024
 #define WIN_HEIGHT 512
+#define NULL '\0'
 
 int ts=32,ps=16;
+
+void renderizarTexto(int x,int y, char *str)
+{
+    glPushAttrib(GL_CURRENT_BIT);
+    glColor3f(1.0f,1.0f,1.0f);
+    glRasterPos2i(x,y);
+    for (char *txt=str;*txt!=NULL;txt++)
+    {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *txt);
+    }
+}
 
 class Peca
 {
 public:
     int px,py;
-    std::string time,nome;
+    std::string time,nome,estado;
     Peca(int px, int py, std::string time, std::string nome)
     {
         this->px=px; this->py=py; this->time=time; this->nome=nome;
@@ -130,14 +142,16 @@ void desenharTodasPecas()
     }
 }
 
-void renderizarTexto(int x,int y, char *str)
+void selecionarPeca(int cx, int cy)
 {
-    glPushAttrib(GL_CURRENT_BIT);
-    glColor3f(1.0f,1.0f,1.0f);
-    glRasterPos2i(x,y);
-    for (char *txt=str;*txt!='\0';txt++)
+    for (int i=0;i<pecas.size();i++)
     {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *txt);
+        if(cx>=pecas[i].px && cx<=pecas[i].px+ps && cy>=pecas[i].py && cy<=pecas[i].py+ps)
+        {
+            std::cout << pecas[i].nome << std::endl;
+            renderizarTexto(300,50,(char*)pecas[i].nome.c_str());
+            return;
+        }
     }
 }
 
@@ -152,6 +166,13 @@ void display()
 
 void btn(unsigned char key, int x, int y)
 {
+    glutPostRedisplay();
+}
+
+
+void click(int b, int s, int x, int y)
+{
+    if(b==GLUT_LEFT_BUTTON && s==GLUT_DOWN){std::cout<<x<<"\n"<<y<<std::endl; selecionarPeca(x,y);}
     glutPostRedisplay();
 }
 
@@ -171,6 +192,7 @@ int main(int argc, char** argv)
     start();
     glutDisplayFunc(display);
     glutKeyboardFunc(btn);
+    glutMouseFunc(click);
     glutMainLoop();
     return 0;
 }
